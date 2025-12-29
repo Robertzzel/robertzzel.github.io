@@ -166,14 +166,15 @@ const Pawn = class {
     
     img.onclick = (e) => {
         if(pawnToBeMoved !== null){
-            document.getElementById(pawnToBeMoved.id).style.border = "none";
+            document.getElementById(pawnToBeMoved.id).classList.remove("selected");
         }
         if(pawnToBeMoved === this){
             pawnToBeMoved = null;
             return;
         }
         pawnToBeMoved = this;
-        img.style.border = "2px solid black";
+        let pawnTag = document.getElementById(pawnToBeMoved.id)
+        pawnTag.classList.add("selected");
     };
 
     return img;
@@ -199,7 +200,8 @@ document.getElementById("board").addEventListener("click", (e) => {
     console.log(pawnToBeMoved.x, pawnToBeMoved.y)
     tag.style.left = `${pawnToBeMoved.x}vw`;
     tag.style.top = `${pawnToBeMoved.y}vh`;
-    tag.style.border = "none";
+    console.log(tag.classList)
+    tag.classList.remove("selected");
     pawnToBeMoved = null;
     saveStateInLocalStorage(pawns);
 })

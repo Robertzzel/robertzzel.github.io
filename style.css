@@ -19,7 +19,11 @@ body{
 #cards-image{
     position: absolute;
     left: 28vw;
-    top: -3vh;
-    transform: rotate(90deg);
-    /* z-index: 1000; */
+    top: 3vh;
+    /* transform: rotate(90deg); */
+}
+
+#cards-image img{
+    width: 13vw; 
+    height: 26vh;
 }

@@ -1,10 +1,7 @@
 let colors = ["dodgerblue", "red", "green", "yellow"]
 let offsets = [[-2.5,0],[0,-4],[0,3],[2.5,0]]
-let InterPawnDistance = 10
-
 const PAWN_WIDTH = 3
 const PAWN_HEIGHT = 9
-
 
 let getPositionByNearestCoords = (x, y) => {
     let nearestPosition = null;
@@ -139,11 +136,17 @@ const Pawn = class {
     this.position = position;
     this.image = "Pawns/" + color + ".png";
     this.offsets = offsets;
-    let coords = getCoordsByPosition(this.position);
-    this.x = coords[0];
-    this.y = coords[1];
     this.id = `pawn-${color}`;
+    this.setPosition(this.position);
   }
+
+  setPosition(newPosition) {
+    this.position = newPosition;
+    let coords = getCoordsByPosition(this.position);
+    this.x = coords[0]-PAWN_WIDTH/2+this.offsets[0];
+    this.y = coords[1]-PAWN_HEIGHT/2+this.offsets[1];
+  }
+
   getImageTag() {
     const img = document.createElement("img");
 
@@ -151,8 +154,8 @@ const Pawn = class {
     img.id = this.id;
 
     img.style.position = "absolute";
-    img.style.left = `${this.x-PAWN_WIDTH/2+this.offsets[0]}vw`;
-    img.style.top = `${this.y-PAWN_HEIGHT/2+this.offsets[1]}vh`;
+    img.style.left = `${this.x}vw`;
+    img.style.top = `${this.y}vh`;
     img.style.width = `${PAWN_WIDTH}vw`;
     img.style.height = `${PAWN_HEIGHT}vh`;
     img.draggable = true;
@@ -160,31 +163,45 @@ const Pawn = class {
     img.style.cursor = "grab";
     img.style.userSelect = "none";
     img.style.touchAction = "none";
-
-    img.ondragend = (e) => {
-      const newPos = getPositionByNearestCoords(e.clientX,e.clientY);
-      this.position = newPos;
-
-      let [nx, ny] = getCoordsByPosition(newPos);
-      nx += this.offsets[0]
-      ny += this.offsets[1]
-      this.x = nx;
-      this.y = ny;
-      img.style.left = `${nx-PAWN_WIDTH/2}vw`;
-      img.style.top = `${ny-PAWN_HEIGHT/2}vh`;
-      saveStateInLocalStorage(pawns);
+    
+    img.onclick = (e) => {
+        if(pawnToBeMoved !== null){
+            document.getElementById(pawnToBeMoved.id).style.border = "none";
+        }
+        if(pawnToBeMoved === this){
+            pawnToBeMoved = null;
+            return;
+        }
+        pawnToBeMoved = this;
+        img.style.border = "2px solid black";
     };
 
     return img;
-}
+    }
 }
 
+var pawnToBeMoved = null;
 document.getElementById("reset-image").addEventListener("click", () => {
     let res = confirm("You want to reset the game?")
     if(res){
         localStorage.clear()
         location.reload()
     }
+})
+
+document.getElementById("board").addEventListener("click", (e) => {
+    if(pawnToBeMoved === null){
+        return;
+    }
+    const newPos = getPositionByNearestCoords(e.clientX,e.clientY);
+    pawnToBeMoved.setPosition(newPos);
+    var tag = document.getElementById(pawnToBeMoved.id);
+    console.log(pawnToBeMoved.x, pawnToBeMoved.y)
+    tag.style.left = `${pawnToBeMoved.x}vw`;
+    tag.style.top = `${pawnToBeMoved.y}vh`;
+    tag.style.border = "none";
+    pawnToBeMoved = null;
+    saveStateInLocalStorage(pawns);
 })
 
 var pawns = [];

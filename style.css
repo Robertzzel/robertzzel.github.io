@@ -2,15 +2,14 @@ body{
     background-image: url("background.png");
 }
 
-#board {
-    
+#reset-btn{
+    position: absolute;
+    left: 35vw;
+    top: 15vh;
 }
 
-.btn {
-    font-size: 25px;
-    padding: 10px;
+#cards-btn{
+    position: absolute;
+    left: 55vw;
+    top: 15vh;
 }
-
-/* #reset-btn{
-    margin-right: 300px;
-} */

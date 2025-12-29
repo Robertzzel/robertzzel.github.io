@@ -179,7 +179,7 @@ const Pawn = class {
 }
 }
 
-document.getElementById("reset-btn").addEventListener("click", () => {
+document.getElementById("reset-image").addEventListener("click", () => {
     let res = confirm("You want to reset the game?")
     if(res){
         localStorage.clear()

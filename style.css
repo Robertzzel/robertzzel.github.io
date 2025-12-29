@@ -4,12 +4,22 @@ body{
 
 #reset-btn{
     position: absolute;
-    left: 35vw;
+    left: 65vw;
     top: 15vh;
 }
 
-#cards-btn{
+#reset-image{
     position: absolute;
-    left: 55vw;
-    top: 15vh;
+    left: 50vw;
+    top: -3vh;
+    width: 36vw;
+    height: 36vh;
+}
+
+#cards-image{
+    position: absolute;
+    left: 28vw;
+    top: -3vh;
+    transform: rotate(90deg);
+    /* z-index: 1000; */
 }
